@@ -224,10 +224,39 @@ class PublishWire(unittest.TestCase):
         self.assertIn("DELETE FROM prices_latest", sqls)
         self.assertEqual(sum(1 for s in sqls if s.startswith("INSERT INTO prices_latest")), 3)
         self.assertEqual(sum(1 for s in sqls if s.startswith("INSERT INTO refresh_log")), 1)
-        self.assertEqual(sum(1 for s in sqls if s == "close"), 1)
+        # `close` is a protocol request type, never a SQL statement
+        self.assertNotIn("close", sqls)
+        self.assertEqual(body["requests"][-1], {"type": "close"})
         # token travels in the header, never in the body
         self.assertEqual(req.get_header("Authorization"), "Bearer secret-token")
         self.assertNotIn("secret-token", req.data.decode())
+
+    def test_argument_types_match_the_wire_contract(self):
+        """Turso's /v2/pipeline is strict and asymmetric about bound values:
+        a float must arrive as a JSON number, an integer as a JSON string.
+        Sending either the other way is an HTTP 400 at publish time — the
+        failure that only ever appears against a real database."""
+        live.publish(batch(3), "wfp", {"as_of": "2026-08", "pairs": 3, "detail": "wfp:2026-08"})
+        body, _ = self.sent[0]
+        price_arg = rows_arg = None
+        for r in body["requests"]:
+            if "stmt" not in r:
+                continue                       # the trailing {"type":"close"}
+            stmt = r["stmt"]
+            sql = stmt["sql"]
+            args = stmt.get("args") or []
+            if sql.startswith("INSERT INTO prices_latest"):
+                price_arg = args[2]          # price
+                self.assertIsInstance(args[0]["value"], str)   # district stays text
+            elif sql.startswith("INSERT INTO refresh_log"):
+                rows_arg = args[3]           # row count
+        self.assertIsNotNone(price_arg)
+        self.assertEqual(price_arg["type"], "float")
+        self.assertIsInstance(price_arg["value"], float)       # number, never "495.7"
+        self.assertIsNotNone(rows_arg)
+        self.assertEqual(rows_arg["type"], "integer")
+        self.assertIsInstance(rows_arg["value"], str)           # string, never 3
+        self.assertTrue(rows_arg["value"].isdigit())
 
     def test_no_credentials_skips_unless_required(self):
         os.environ.pop("TURSO_DATABASE_URL")

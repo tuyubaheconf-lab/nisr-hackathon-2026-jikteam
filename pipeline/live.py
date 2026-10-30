@@ -167,10 +167,20 @@ def _token():
 
 
 def _arg(kind, value):
-    """Turso wants scalar argument values as JSON strings, to avoid float
-    precision loss in JSON implementations that round to 64 bits."""
+    """Encode one bound argument for /v2/pipeline.
+
+    The wire format is asymmetric, and the API is strict about it (verified
+    against a live database, because the errors are only visible at runtime):
+
+        float    -> JSON number    {"type":"float","value":495.7}
+        integer  -> JSON string    {"type":"integer","value":"7"}
+        text     -> JSON string    {"type":"text","value":"Kirehe"}
+
+    A float sent as a string is rejected with `expected f64`; an integer sent
+    as a number with `expected a borrowed string`."
+    """
     if kind == "float":
-        return {"type": "float", "value": str(float(value))}
+        return {"type": "float", "value": float(value)}
     if kind == "integer":
         return {"type": "integer", "value": str(int(value))}
     return {"type": "text", "value": str(value)}
@@ -279,7 +289,9 @@ def publish(rows, source, meta, dry_run=False):
         )
     )
     reqs.append(_execute("COMMIT"))
-    reqs.append(_execute("close"))
+    # `close` is a request type in the pipeline protocol, not SQL — sending it
+    # as an execute fails the whole publish at the final statement.
+    reqs.append({"type": "close"})
 
     if dry_run:
         print(f"  dry-run: would send {len(reqs)} statements ({len(rows)} rows)")
@@ -314,7 +326,7 @@ def log_rejection(source, problems):
                         {"type": "text", "value": detail},
                     ],
                 ),
-                _execute("close"),
+                {"type": "close"},
             ],
         )
     except Exception as exc:  # noqa: BLE001 - audit logging must not mask the real failure
