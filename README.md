@@ -12,13 +12,8 @@ NISR Big Data Hackathon 2026 · **Track 1: Agricultural Productivity**
 
 | Read | What it is |
 |---|---|
-| **[demo (video walkthrough)](https://drive.google.com/file/d/1dx6Pg0LrgPKIAzApRy8wWsg32AMGlejL/view?usp=sharing)** | The demo video: a 3-minute spoken walkthrough of all four pages, what each one does, and what to say to a judge. |
-| **[docs/SUBMISSION.md](docs/SUBMISSION.md)** | For the judges: the five evaluation criteria, and the exact place in the project where each one is evidenced. Also the declaration and the pre-submission checklist. |
-| **[docs/PROJECT_EXPLAINED.md](docs/PROJECT_EXPLAINED.md)** | The whole project in plain words: the problem, the four tabs, where the numbers come from, how the forecast and the decision rule work, what the backtest found, the honest limits, and a glossary. Start with this. |
 | **[docs/BUSINESS_PROCESSES.md](docs/BUSINESS_PROCESSES.md)** | The business: who pays, the farmer's process before and after, the monthly operating cycle, the seasonal calendar, three revenue models, unit economics, risks and rollout. |
 | **[docs/DATA_RELIABILITY.md](docs/DATA_RELIABILITY.md)** | Are the prices trustworthy? Why WFP and not eSoko, what is estimated and what is measured, the five source errors we corrected, and a sensitivity test on the one data choice that changes a verdict. |
-| **[docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)** | The 3-minute demo: exact clicks, what to say, and pre-written answers to the questions judges ask. |
-| **[docs/TURSO_SETUP.md](docs/TURSO_SETUP.md)** | Full Turso walkthrough: create the database, mint the tokens, set them locally, on Netlify and in GitHub Actions, then verify `/api/prices`. |
 | **[docs/REALTIME_DATA.md](docs/REALTIME_DATA.md)** | How prices become current without a streaming feed: the refresh path, the 7 publish guards, and the six things to ask eSoko for in an agreement. |
 | **[docs/SECURITY.md](docs/SECURITY.md)** | Threat model, the permission matrix (who may read whose data), the privacy notice, and Rwanda's Law 058/2021 mapped to what we build next. |
 | **[docs/AI_ASSISTANCE.md](docs/AI_ASSISTANCE.md)** | Disclosure: the AI assistant we used, what it did and did not do, and how to verify every figure yourself. |
