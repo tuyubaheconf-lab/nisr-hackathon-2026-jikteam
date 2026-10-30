@@ -38,7 +38,11 @@ export default function BoardView({ data, lang, t }: Props) {
   if (!crop) return <p className="note warn">No crops available.</p>;
 
   const holding = rows.filter((r) => r.advice.action === "hold");
-  const selectedRow = rows.find((r) => r.district.id === selected) ?? rows[0];
+  // districts that exist but carry no price for this crop, Nyaruguru being the
+  // case in point: listed and mappable, never given an invented number
+  const noData = data.districts.filter((d) => !d.crops[crop.id]);
+  const selectedRow = rows.find((r) => r.district.id === selected);
+  const selectedNoData = noData.find((d) => d.id === selected);
 
   const statusOf = (d: District) => {
     const r = rows.find((x) => x.district.id === d.id);
@@ -57,6 +61,24 @@ export default function BoardView({ data, lang, t }: Props) {
 
   return (
     <div className="stack">
+      <section className="card why">
+        <div className="card-title">{t("board.why.title")}</div>
+        <ul className="why-list">
+          <li>
+            <strong>{t("board.why.officerWho")}</strong> {t("board.why.officer")}
+          </li>
+          <li>
+            <strong>{t("board.why.coopWho")}</strong> {t("board.why.coop")}
+          </li>
+          <li>
+            <strong>{t("board.why.lenderWho")}</strong> {t("board.why.lender")}
+          </li>
+        </ul>
+        <p className="small muted" style={{ margin: "8px 0 0" }}>
+          {t("board.why.note")}
+        </p>
+      </section>
+
       <section className="card">
         <div className="card-title">{t("board.crop")}</div>
         <div className="chips">
@@ -85,10 +107,10 @@ export default function BoardView({ data, lang, t }: Props) {
           })}
         </div>
         <p className="section-p" style={{ marginTop: 12, marginBottom: 0 }}>
-          {t("board.subtitle")} — {holding.length} / {rows.length}{" "}
+          {t("board.subtitle")}{" "}
           {lang === "en"
-            ? `districts are worth storing in ${monthName(decisionYM, lang)}.`
-            : `uturere dukwiriye kubika mu ${monthName(decisionYM, lang)}.`}
+            ? `${holding.length} of ${rows.length} districts are worth storing in ${monthName(decisionYM, lang)}.`
+            : `Uturere ${holding.length} kuri ${rows.length} dukwiriye kubika mu ${monthName(decisionYM, lang)}.`}
         </p>
       </section>
 
@@ -96,10 +118,15 @@ export default function BoardView({ data, lang, t }: Props) {
         <section className="card">
           <div className="card-title">{t("board.mapTitle")}</div>
           <DistrictMap
-            districts={rows.map((r) => r.district)}
+            districts={data.districts}
             statusOf={statusOf}
             onPick={(d) => setSelected(d.id)}
-            labels={{ hold: t("board.legend.hold"), sell: t("board.legend.sell"), estimated: t("board.legend.estimated") }}
+            labels={{
+              hold: t("board.legend.hold"),
+              sell: t("board.legend.sell"),
+              estimated: t("board.legend.estimated"),
+              none: t("board.legend.none"),
+            }}
           />
         </section>
 
@@ -109,12 +136,25 @@ export default function BoardView({ data, lang, t }: Props) {
           <label className="field" htmlFor="district-pick">
             {t("board.district")}
           </label>
-          <select id="district-pick" value={selectedRow?.district.id} onChange={(e) => setSelected(e.target.value)}>
+          <select
+            id="district-pick"
+            value={selectedRow?.district.id ?? selectedNoData?.id ?? rows[0]?.district.id ?? ""}
+            onChange={(e) => setSelected(e.target.value)}
+          >
             {rows.map((r) => (
               <option key={r.district.id} value={r.district.id}>
                 {r.district.id}
               </option>
             ))}
+            {noData.length > 0 && (
+              <optgroup label={t("board.legend.none")}>
+                {noData.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.id} ({t("board.noData")})
+                  </option>
+                ))}
+              </optgroup>
+            )}
           </select>
 
           <div className="slider" style={{ marginTop: 10 }}>
@@ -142,9 +182,11 @@ export default function BoardView({ data, lang, t }: Props) {
           </div>
           {!wouldHold && (
             <p className="note warn" style={{ marginTop: 10 }}>
-              {lang === "en"
-                ? `${selectedRow?.district.id ?? "This district"} is not in a storage month. We advise selling, so there is no storage gain to report — waiting here has historically cost money, not made it.`
-                : `Aka karere ntabwo kiri mu gihe cyo kubika. Dutanga inama yo kugurisha.`}
+              {selectedNoData
+                ? t("board.noDataNote", { district: selectedNoData.id })
+                : lang === "en"
+                  ? `${selectedRow?.district.id ?? "This district"} is not in a storage month. We advise selling, so there is no storage gain to report — waiting here has historically cost money, not made it.`
+                  : `Aka karere ntabwo kiri mu gihe cyo kubika. Dutanga inama yo kugurisha.`}
             </p>
           )}
           {selectedRow && (
@@ -205,9 +247,30 @@ export default function BoardView({ data, lang, t }: Props) {
                   </tr>
                 );
               })}
+              {noData.map((d) => (
+                <tr key={d.id} style={{ cursor: "pointer" }} onClick={() => setSelected(d.id)}>
+                  <td>
+                    {d.id}
+                    <span className="badge grey" style={{ marginLeft: 6 }}>
+                      {t("board.noData")}
+                    </span>
+                  </td>
+                  <td className="num">—</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td className="num">—</td>
+                  <td className="muted">{t("board.legend.none")}</td>
+                  <td className="num muted">—</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
+        {noData.length > 0 && (
+          <p className="small muted" style={{ marginBottom: 0 }}>
+            {t("board.noDataNote", { district: noData.map((d) => d.id).join(", ") })}
+          </p>
+        )}
       </section>
     </div>
   );

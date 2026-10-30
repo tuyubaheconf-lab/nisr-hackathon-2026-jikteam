@@ -126,7 +126,10 @@ export default function FarmerView({ data, lang, t, live }: Props) {
             total: coverage.total_districts,
             live: coverage.live_districts.length,
             markets: coverage.markets_reporting_2026,
-          })}
+          })}{" "}
+          {coverage.missing_districts.length > 0 && (
+            <> {t("coverage.unmodelled", { districts: coverage.missing_districts.join(", ") })}</>
+          )}
         </p>
       )}
 

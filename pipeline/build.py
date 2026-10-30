@@ -846,6 +846,21 @@ def main():
                                        if m["last"] >= "2026-01"}),
     }
 
+    # A district the prices cannot speak to still belongs on the map: a farmer in
+    # Nyaruguru should find Nyaruguru there, labelled, rather than absent. It is
+    # carried with no crop data at all, because Miko market last reported in
+    # 2012 and borrowing a neighbouring district's price would invent a number
+    # nobody measured.
+    for name in sorted(set(ALL_DISTRICTS) - covered):
+        districts[name] = {
+            "id": name,
+            "province": ALL_DISTRICTS[name],
+            "lat": None,
+            "lon": None,
+            "crops": {},
+            "unmodelled": True,
+        }
+
     payload = {
         "meta": meta,
         "now": f"{NOW[0]:04d}-{NOW[1]:02d}",

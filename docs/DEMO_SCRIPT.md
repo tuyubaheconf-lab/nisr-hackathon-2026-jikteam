@@ -103,7 +103,10 @@ Point at the 8.1%.
 
 ## 2:20–2:45 — The planner view
 
-Go to **Planner board**. Click through a few months so the map changes colour.
+Go to **Planner board**. The card at the top states who the page is for — a district officer, a
+co-operative with a store, a lender — read one of those lines. Then click through a few months so the
+map changes colour, and point out that all **30** districts are drawn: Nyaruguru is grey because no
+market there has reported since 2012, and we do not invent a price for it.
 
 > "The same model at national scale. In October, sell everywhere — price is already at the top of the
 > year. Through January, February and March the map turns green where storing pays; February is the

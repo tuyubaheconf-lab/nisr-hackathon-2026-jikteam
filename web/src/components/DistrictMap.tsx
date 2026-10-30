@@ -21,7 +21,7 @@ export default function DistrictMap({
   districts: District[];
   statusOf: (d: District) => { status: Status; estimated: boolean };
   onPick?: (d: District) => void;
-  labels: { hold: string; sell: string; estimated: string };
+  labels: { hold: string; sell: string; estimated: string; none: string };
 }) {
   const [features, setFeatures] = useState<GeoFeature[] | null>(null);
   const [hover, setHover] = useState<District | null>(null);
@@ -113,6 +113,9 @@ export default function DistrictMap({
             );
           })}
           {districts.map((d) => {
+            // a district with no price series has no coordinates either; the
+            // shape still draws from the boundary file, just without a pin
+            if (d.lon == null || d.lat == null) return null;
             const [x, y] = project(d.lon, d.lat);
             return <circle key={`pt-${d.id}`} cx={x} cy={y} r={2.2} fill="#fff" stroke="#14231d" strokeWidth="0.8" />;
           })}
@@ -136,6 +139,9 @@ export default function DistrictMap({
         </span>
         <span>
           <i style={{ background: "#1c7a4f", opacity: 0.45 }} /> {labels.estimated}
+        </span>
+        <span>
+          <i style={{ background: "#dcd8ca" }} /> {labels.none}
         </span>
       </div>
     </div>

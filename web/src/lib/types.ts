@@ -40,9 +40,12 @@ export interface DistrictCrop {
 export interface District {
   id: string;
   province: string;
-  lat: number;
-  lon: number;
+  /** null only for a district with no price series at all */
+  lat: number | null;
+  lon: number | null;
   crops: Record<string, DistrictCrop>;
+  /** carried so the map is complete, but there is nothing to advise on */
+  unmodelled?: boolean;
 }
 
 export interface Crop {

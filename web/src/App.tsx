@@ -5,6 +5,7 @@ import { fetchLive, formatRefresh, type LiveFeed } from "./lib/live";
 import FarmerView from "./components/FarmerView";
 import BoardView from "./components/BoardView";
 import MethodView from "./components/MethodView";
+import Logo from "./components/Logo";
 import PhoneView from "./components/PhoneView";
 
 type Page = "advice" | "board" | "phone" | "method";
@@ -71,7 +72,10 @@ export default function App() {
       <header className="top">
         <div className="wrap top-inner">
           <div className="brand">
-            <h1>{t("app.name")}</h1>
+            <h1 className="logo-lockup">
+              <Logo />
+              <span>{t("app.name")}</span>
+            </h1>
             <span className="tagline">{t("app.tagline")}</span>
           </div>
           <div className="top-actions">

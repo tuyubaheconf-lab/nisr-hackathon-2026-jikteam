@@ -91,8 +91,8 @@ header.top {
 
 .brand {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
   min-width: 0;
 }
 
@@ -101,6 +101,28 @@ header.top {
   font-weight: 800;
   letter-spacing: -0.02em;
   white-space: nowrap;
+}
+
+/* logo mark + wordmark, kept as one accessible heading */
+.brand h1.logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.logo-mark {
+  display: block;
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+
+@media (min-width: 620px) {
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 .brand .tagline {
@@ -162,6 +184,9 @@ nav.tabs a {
   color: #b9d3c4;
   text-decoration: none;
   padding: 9px 14px 11px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   font-size: 0.86rem;
   font-weight: 600;
   border-bottom: 3px solid transparent;
@@ -243,6 +268,7 @@ footer.foot {
   background: #fff;
   border-radius: 999px;
   padding: 8px 14px;
+  min-height: 40px; /* comfortable target for a thumb */
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -276,6 +302,7 @@ select,
 input[type="number"] {
   font: inherit;
   padding: 9px 12px;
+  min-height: 44px;
   border-radius: 10px;
   border: 1px solid var(--line-strong);
   background: #fff;
@@ -606,6 +633,23 @@ svg.chart .axis {
   height: 11px;
   border-radius: 3px;
   display: inline-block;
+}
+
+/* ---------- planner intro ---------- */
+
+.why .why-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.why .why-list li + li {
+  margin-top: 6px;
+}
+
+.why .why-list strong {
+  color: var(--ink);
 }
 
 /* ---------- misc ---------- */
