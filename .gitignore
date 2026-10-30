@@ -1,0 +1,33 @@
+# raw data — fetched with pipeline/fetch_data.py
+prices_raw.csv
+markets_raw.csv
+rwa_adm2.geojson
+rwa_adm1.geojson
+hdx.json
+geo.json
+
+# build outputs
+web/dist/
+web/node_modules/
+web/.chrome-tmp/
+web/dump-*.html
+__pycache__/
+*.pyc
+
+# secrets — copy .env.example to .env and fill it in locally
+.env
+.env.local
+.env.*.local
+
+# editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# typescript incremental build info
+web/tsconfig.tsbuildinfo
+web/.chrome-tmp*/
+
+# Local Netlify folder
+.netlify

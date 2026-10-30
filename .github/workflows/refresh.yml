@@ -1,0 +1,66 @@
+# Scheduled refresh — how the prices stay current without anyone pressing a button.
+#
+# Runs once a day: re-download the source extract, rebuild the model, then
+# publish a validated live snapshot. If the publish guard rejects a batch, this
+# job fails loudly and the previous good snapshot keeps serving.
+#
+# Repository secrets required for the publish step:
+#   TURSO_DATABASE_URL   turso://<db>-<org>.turso.io  (or the https:// form)
+#   TURSO_AUTH_TOKEN     write token, from: turso db tokens create <db>
+#
+# Without the secrets the job still refreshes data.json + live.json (the static
+# mirror), so the site improves even before the database exists.
+name: Refresh prices
+
+on:
+  schedule:
+    - cron: "17 3 * * *"   # 03:17 UTC daily — off the hour to avoid peak loads
+  workflow_dispatch: {}     # manual run from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"   # the tests run with --experimental-strip-types, which needs >= 22.6
+
+      - name: Fetch source extracts
+        run: python pipeline/fetch_data.py
+
+      - name: Rebuild the model dataset
+        run: python pipeline/build.py
+
+      - name: Validate and publish the live snapshot
+        env:
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+          SOKO_REQUIRE_DB: "1"      # fail the run rather than skip the publish
+        run: python pipeline/live.py
+
+      - name: Run the tests that guard all of the above
+        run: |
+          python pipeline/test_live.py
+          cd web
+          npm ci
+          node --experimental-strip-types test/api.test.mjs
+          node --experimental-strip-types test/permissions.test.mjs
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "sokoryari-refresh"
+          git config user.email "sokoryari-refresh@users.noreply.github.com"
+          git add web/public/data/data.json web/public/data/live.json
+          git diff --cached --quiet && echo "no change" && exit 0
+          git commit -m "data: daily refresh of prices and live snapshot"
+          git push
