@@ -4,6 +4,8 @@
 
 NISR Big Data Hackathon 2026 · **Track 1: Agricultural Productivity**
 
+**Live:** <https://sokoryari.netlify.app> · **Repository:** <https://github.com/tuyubaheconf-lab/nisr-hackathon-2026-jikteam>
+
 ---
 
 ## Start here
@@ -171,7 +173,10 @@ The **decision rule** has two gates, both learned from the data:
 
 `web/dist/` is a plain static site with relative asset paths, so it runs anywhere.
 
-- **Fastest:** drag `web/dist` onto <https://app.netlify.com/drop> — no account needed to get a live URL.
+- **This project is deployed at <https://sokoryari.netlify.app>** — production, with the
+  `/api/prices` function reading Turso.
+- **Fastest to re-deploy:** `netlify deploy --prod --dir web/dist --functions web/netlify/functions`.
+  Drag-and-drop also works: <https://app.netlify.com/drop> — no account needed to get a URL.
 - **Vercel:** import the repo, set root directory `web`, build command `npm run build`, output `dist`.
 - **GitHub Pages:** push `web/dist` to a `gh-pages` branch.
 
@@ -204,8 +209,8 @@ data today; the threat model and privacy notice are in
 
 | Member | University | Role |
 |---|---|---|
-| _name_ | _university_ | application and deployment, data pipeline |
-| _name_ | _university_ | data validation and model review, field testing, Kinyarwanda |
+| TUYUBAHE Confiance | RP-TUMBA COLLEGE | application and deployment, data pipeline |
+| CYIZA Dosite IRADUKUNDA | RP-TUMBA COLLEGE | data validation and model review, field testing, Kinyarwanda |
 
 Built for the **NISR Big Data Hackathon 2026**, Track 1: Agricultural Productivity.
 

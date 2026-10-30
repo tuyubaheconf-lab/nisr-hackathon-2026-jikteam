@@ -28,3 +28,6 @@ Thumbs.db
 # typescript incremental build info
 web/tsconfig.tsbuildinfo
 web/.chrome-tmp*/
+
+# Local Netlify folder
+.netlify

@@ -146,11 +146,11 @@ Three reasons this is the right move and not a risk:
 
 ## 3. Two minutes before you submit
 
-- [ ] `web/dist` rebuilt from the current source (`cd web && npm run build`) and deployed
-- [ ] The deployed URL opens, the four tabs work, the default advice shows a verdict
-- [ ] `curl https://YOUR-URL/api/prices` returns `{"ok":true,…}` — or returns 503 and the site
-      still shows prices from `./data/live.json` (both are acceptable; the second is the
-      offline-safe path)
+- [x] `web/dist` deployed to production: **<https://sokoryari.netlify.app>**
+- [x] The live URL opens, all four tabs work, the default advice shows a verdict (checked in a
+      headless browser against the deployed site, not localhost)
+- [x] `curl https://sokoryari.netlify.app/api/prices` returns `{"ok":true,…,"count":152}` with the
+      5-minute cache header on `./data/live.json` (both fallbacks return 200)
 - [ ] GitHub repository is **public**, contains `README.md`, `docs/`, `pipeline/`, `web/src/`
 - [ ] `.env` is **not** in the repository (it is gitignored — confirm with `git log --all -- .env`)
 - [ ] Team section in the README has both names, universities and roles
