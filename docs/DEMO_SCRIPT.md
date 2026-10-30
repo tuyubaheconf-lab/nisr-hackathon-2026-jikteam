@@ -5,12 +5,30 @@ shipped dataset. Do not read the screen; speak to the judge.
 
 ---
 
+## The four pages, in one line each
+
+Use this if you need to explain the site without the script. Each page answers a
+different person's question, off the same model and the same data.
+
+| Page | For whom | What it answers | One sentence you can say |
+|---|---|---|---|
+| **My advice** | A farmer with a phone and a bag of grain | *"Sell today, or hold?"* Pick crop, district, quantity and month. It returns one verdict (SELL / HOLD until a month), the arithmetic behind it (storage, interest, spoilage, transport), the price chart with the two years past and eight months forecast, the reasoning in English and Kinyarwanda, and the SMS that would reach a feature phone. Three sliders (storage cost, interest, transport) re-run the whole decision live. | "This is the product: one question, one answer, and the money behind it." |
+| **Planner board** | District agriculture officer, co-operative, NGO, MINAGRI | *"Where in the country is storing worth advising this month?"* A 30-district map coloured by verdict for the chosen month, a month-by-month calendar, a district detail table, and an impact calculator with visible assumptions. | "The same advice, seen as a country instead of one farm, so someone can plan with it." |
+| **Feature phone** | The farmer the other pages cannot reach | *"Does this work without a smartphone?"* A working USSD session on a handset: press CALL, choose crop, district and quantity with the keypad, read the answer and the SMS that follows. Same engine, same prices; only the telecom hop is simulated. | "No internet, no app, no data: a short code and one sentence back." |
+| **Method & evidence** | The judge | *"Why should I believe any of it?"* The datasets and licences, the three forecasters and their error on unseen months, the economic backtest per crop, and the limitations written out plainly. | "Every number on the site, where it comes from, and the crops where our advice loses money." |
+
+Two global controls sit above every page: **EN / RW**, which switches the whole
+interface including the SMS text, and the coverage strip, which states how many
+districts still have a market reporting this month.
+
+---
+
 ## 0:00–0:25 — The hook
 
 > "A maize farmer in Kirehe has a few bags to sell after harvest. School fees are due, labour is due,
 > a debt is due — so she sells now, like everyone else around her, and the market is full. In Kirehe's
-> own measured prices, maize is cheapest in March at about 430 RWF a kilo and dearest in November at
-> about 715 — two-thirds higher. She will have nothing left to sell by then. The trader with a store
+> own measured prices, maize is cheapest in March at about 430 RWF a kilo and dearest in December at
+> about 730 — two-thirds higher. She will have nothing left to sell by then. The trader with a store
 > keeps the difference. Nationally, that same gap is 42%."
 
 Nothing on screen yet, or the home page with the tagline.
@@ -21,7 +39,7 @@ Go to **My advice**. Crop: **Maize**. District: **Kirehe**.
 
 > "This is 13 years of measured market prices — 76,933 observations from the World Food Programme,
 > ending August 2026. The line is not a guess: the same seasonal shape returns every year. Kirehe is
-> cheapest in March and dearest in November — a 71% gap. Nationally, maize swings 42%."
+> cheapest in March and dearest in December — a 71% gap. Nationally, maize swings 42%."
 
 Point at the chart. Then click the month chips: **Mar 2027**.
 
@@ -50,12 +68,15 @@ Now drag the **interest** slider from 12% up to 24%.
 ## 1:25–1:50 — The phone
 
 Go to the **Feature phone** tab. Set the demo clock to **Feb 2027**, press **CALL**, then **1** (maize),
-**1** (the first district), **3** (one tonne).
+**9** (more districts), **5** (Kirehe), **3** (one tonne). It answers **hold 8 months, +72 RWF/kg** — the
+same district, crop and hold as the website, on a handset.
 
 > "Most of these farmers do not have a smartphone and do not use the internet. So this is the product:
 > a short code, a keypad, and one sentence back — in Kinyarwanda if she prefers. No data, no app."
 
-Read the USSD screen. Then point at the SMS bubble underneath.
+Read the USSD screen. Then point at the SMS bubble underneath — the exact text is
+*"Kirehe: TEGEREZA Ibigori amezi 8, ugurishe muri Ukw 2027"*: the same verdict as a single text
+message that lands on any phone.
 
 > "And the same advice as a single text message, in Kinyarwanda, that lands on any phone."
 
