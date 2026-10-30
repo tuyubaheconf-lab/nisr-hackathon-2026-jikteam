@@ -10,6 +10,7 @@ NISR Big Data Hackathon 2026 · **Track 1: Agricultural Productivity**
 
 | Read | What it is |
 |---|---|
+| **[docs/SUBMISSION.md](docs/SUBMISSION.md)** | For the judges: the five evaluation criteria, and the exact place in the project where each one is evidenced. Also the declaration and the pre-submission checklist. |
 | **[docs/PROJECT_EXPLAINED.md](docs/PROJECT_EXPLAINED.md)** | The whole project in plain words: the problem, the four tabs, where the numbers come from, how the forecast and the decision rule work, what the backtest found, the honest limits, and a glossary. Start with this. |
 | **[docs/BUSINESS_PROCESSES.md](docs/BUSINESS_PROCESSES.md)** | The business: who pays, the farmer's process before and after, the monthly operating cycle, the seasonal calendar, three revenue models, unit economics, risks and rollout. |
 | **[docs/DATA_RELIABILITY.md](docs/DATA_RELIABILITY.md)** | Are the prices trustworthy? Why WFP and not eSoko, what is estimated and what is measured, the five source errors we corrected, and a sensitivity test on the one data choice that changes a verdict. |
@@ -17,6 +18,7 @@ NISR Big Data Hackathon 2026 · **Track 1: Agricultural Productivity**
 | **[docs/TURSO_SETUP.md](docs/TURSO_SETUP.md)** | Full Turso walkthrough: create the database, mint the tokens, set them locally, on Netlify and in GitHub Actions, then verify `/api/prices`. |
 | **[docs/REALTIME_DATA.md](docs/REALTIME_DATA.md)** | How prices become current without a streaming feed: the refresh path, the 7 publish guards, and the six things to ask eSoko for in an agreement. |
 | **[docs/SECURITY.md](docs/SECURITY.md)** | Threat model, the permission matrix (who may read whose data), the privacy notice, and Rwanda's Law 058/2021 mapped to what we build next. |
+| **[docs/AI_ASSISTANCE.md](docs/AI_ASSISTANCE.md)** | Disclosure: the AI assistant we used, what it did and did not do, and how to verify every figure yourself. |
 
 ---
 
@@ -29,7 +31,7 @@ Rwandan farmers sell their harvest in the week they harvest it, because they hav
 1. **Forecasts the price path** for a crop in a district, month by month, from 13 years of measured market prices (2014–2026).
 2. **Prices the wait honestly.** It subtracts storage, interest (the cost of money tied up), spoilage and transport from the expected future price.
 3. **Gives one instruction** — *sell now* or *hold until month M* — in English and Kinyarwanda, and delivers it to a feature phone: the **Feature phone** tab is a working USSD session with an SMS preview, computed by the same engine on the same data.
-4. **Refuses to guess.** When the numbers do not clear the model's own measured error, it says sell. In backtesting it advises holding in only **8.1%** of month-crop cases — and that restraint is what makes the advice worth something.
+4. **Refuses to guess.** When the numbers do not clear the model's own measured error, it says sell. In backtesting it advised holding in only **8.1%** of month-crop cases. For most crop, district and month combinations the correct advice is to sell, and the tool gives it.
 
 ## The evidence (all numbers regenerate from the code)
 
@@ -116,7 +118,8 @@ node --experimental-strip-types test/api.test.mjs       # 10: the live API, toke
 node --experimental-strip-types test/livefeed.test.mjs  # 15: when a live price may override the model
 node --experimental-strip-types test/holdmonths.mjs     # what the advice says each month
 cd ..
-python pipeline/test_live.py                            # 26: the publish guard
+python pipeline/test_live.py                            # 27: the publish guard
+node --experimental-strip-types test/sensitivity.mjs    # prints the interest sweep the site quotes
 ```
 
 The test suite checks that:
@@ -158,7 +161,7 @@ The **decision rule** has two gates, both learned from the data:
 ## Limitations
 
 - **Retail, not farmgate.** A farmer selling at the gate gets less than market retail. Treat figures as the shape and direction of the opportunity, not a payout promise.
-- **Costs vary enormously and are yours.** At 12% interest, **210** crop-district-month cases are worth holding; at 24% — what a microfinance loan costs — **128**, and 82 of them flip outright from hold to sell (at 36%, 73 remain). That is a finding, not a bug; it says cheap working capital is the binding constraint, not warehouses.
+- **Costs vary enormously and are yours.** At 12% interest, **210** crop-district-month cases are worth holding; at 24%, what a microfinance loan costs, **128**, and 82 of them flip outright from hold to sell (at 36%, 73 remain). The binding constraint is the cost of money, not the number of warehouses.
 - **Small samples** on some crops; read percentages as indicative where the hold count is low.
 - **One season of shape.** The model does not anticipate drought, import bans or elections.
 - **Not a credit product.** It prices the wait; it does not finance it.
@@ -199,7 +202,16 @@ data today; the threat model and privacy notice are in
 
 ## Team
 
-- _name_ — _role_ (application, deployment, data pipeline)
-- _name_ — _role_ (data validation, model review, field testing)
+| Member | University | Role |
+|---|---|---|
+| _name_ | _university_ | application and deployment, data pipeline |
+| _name_ | _university_ | data validation and model review, field testing, Kinyarwanda |
 
-Replace this section, add your GitHub link and the deployed URL before submitting.
+Built for the **NISR Big Data Hackathon 2026**, Track 1: Agricultural Productivity.
+
+## Disclosure
+
+We used an AI coding assistant during this project, and we say so in full in
+[docs/AI_ASSISTANCE.md](docs/AI_ASSISTANCE.md): what it drafted, what it did not, and the
+commands that regenerate every number on the site. The problem framing, the dataset choices,
+the model and its two gates, the backtests, and every interpretation of the results are ours.

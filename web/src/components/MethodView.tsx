@@ -288,8 +288,8 @@ export default function MethodView({ data, lang, t }: Props) {
                 <strong>The cost assumptions are yours, not ours.</strong> Storage, interest and spoilage are
                 sliders because they vary enormously. Raising interest from 12% to 24% — a SACCO rate to
                 a microfinance rate — cuts the number of crop-district-month cases worth storing from
-                <strong>178 to 106</strong>, and flips <strong>72</strong> of them from hold to sell. That
-                is a finding, not a bug.
+                <strong>210 to 128</strong>, and flips <strong>82</strong> of them from hold to sell (at 36%,
+                73 survive). That is a finding, not a bug.
               </li>
               <li>
                 <strong>Prices are retail, not farmgate.</strong> A farmer selling at the farm gate gets less
