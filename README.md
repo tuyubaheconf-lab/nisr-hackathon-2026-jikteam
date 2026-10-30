@@ -4,7 +4,7 @@
 
 NISR Big Data Hackathon 2026 · **Track 1: Agricultural Productivity**
 
-**Live:** <https://sokoryari.netlify.app> · **Repository:** <https://github.com/tuyubaheconf-lab/nisr-hackathon-2026-jikteam>
+**Live:** <https://sokoryari.netlify.app> · **Repository:** <https://github.com/tuyubaheconf-lab/nisr-hackathon-2026-jikteam> · **Demo:** <https://drive.google.com/file/d/1dx6Pg0LrgPKIAzApRy8wWsg32AMGlejL/view?usp=sharing>
 
 ---
 
@@ -12,6 +12,7 @@ NISR Big Data Hackathon 2026 · **Track 1: Agricultural Productivity**
 
 | Read | What it is |
 |---|---|
+| **[demo (video walkthrough)](https://drive.google.com/file/d/1dx6Pg0LrgPKIAzApRy8wWsg32AMGlejL/view?usp=sharing)** | The demo video: a 3-minute spoken walkthrough of all four pages, what each one does, and what to say to a judge. |
 | **[docs/SUBMISSION.md](docs/SUBMISSION.md)** | For the judges: the five evaluation criteria, and the exact place in the project where each one is evidenced. Also the declaration and the pre-submission checklist. |
 | **[docs/PROJECT_EXPLAINED.md](docs/PROJECT_EXPLAINED.md)** | The whole project in plain words: the problem, the four tabs, where the numbers come from, how the forecast and the decision rule work, what the backtest found, the honest limits, and a glossary. Start with this. |
 | **[docs/BUSINESS_PROCESSES.md](docs/BUSINESS_PROCESSES.md)** | The business: who pays, the farmer's process before and after, the monthly operating cycle, the seasonal calendar, three revenue models, unit economics, risks and rollout. |
